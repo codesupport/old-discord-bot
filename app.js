@@ -2,7 +2,7 @@
 const config = require("./config.json");
 
 // Package Dependencies
-const fs = require("fs");
+const fileSystem = require("fs");
 const Discord = require("discord.js");
 
 // Setup the Discord Client
@@ -15,7 +15,7 @@ let commands = {};
 
 // Run the command handler when the bot is ready.
 client.on("ready", () => {
-	fs.readdir(config.commands_directory, (error, files) => {
+	fileSystem.readdir(config.commands_directory, (error, files) => {
 		for (const file of files) {
 			commands[file.replace(".js", "")] = require(`${config.commands_directory}/${file}`);
 			console.log(`+ ${file}`);
