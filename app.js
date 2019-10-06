@@ -11,7 +11,7 @@ const client = new Discord.Client({
 });
 
 // Create an object to store the command in.
-var commands = {};
+let commands = {};
 
 // Run the command handler when the bot is ready.
 client.on("ready", () => {
@@ -30,7 +30,6 @@ client.on("message", (message) => {
 		const properties = command.properties;
 		const args = message.content.split(" ");
 
-		console.log("message sent", message.author.id);
 		if (args[0].replace(config.prefix, "") == properties.command) {
 			if (properties.prefix) {
 				if (message.content.startsWith(config.prefix)) {
