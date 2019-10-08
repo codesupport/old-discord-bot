@@ -2,7 +2,7 @@
 const config = require("./config.json");
 
 // Package Dependencies
-const fileSystem = require("fs");
+const filesystem = require("fs");
 const Discord = require("discord.js");
 
 // Setup the Discord Client
