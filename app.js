@@ -11,13 +11,17 @@ const client = new Discord.Client({
 });
 
 // Create an object to store the command in.
+/* eslint-disable*/
 let commands = {};
+/* eslint-enable */
 
 // Run the command handler when the bot is ready.
 client.on("ready", () => {
 	fileSystem.readdir(config.commands_directory, (error, files) => {
 		for (const file of files) {
+			/* eslint-disable */
 			commands[file.replace(".js", "")] = require(`${config.commands_directory}/${file}`);
+			/* eslint-enable */
 			console.log(`+ ${file}`);
 		}
 	});
@@ -38,7 +42,7 @@ client.on("message", (message) => {
 					} else {
 						command.run(message, args);
 					}
-				}	
+				}
 			} else {
 				if (message.content.startsWith(properties.command)) {
 					if (properties.arguments.length == 0) {
@@ -46,7 +50,7 @@ client.on("message", (message) => {
 					} else {
 						command.run(message, args);
 					}
-				}	
+				}
 			}
 		}
 	}
@@ -68,7 +72,6 @@ client.on("message", (message) => {
 		message.channel.send({embed});
 	}
 });
-
 
 // Log the client in to establish a connection to Discord.
 client.login(config.discord_token).then(() => {
