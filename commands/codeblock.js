@@ -19,6 +19,7 @@ function run(message) {
 
 	const embed = new Discord.RichEmbed();
 	const image = new Discord.Attachment("./assets/codeblock.png", "codeblock-tutorial.png");
+
 	embed.setTitle("Codeblock Tutorial");
 	embed.setDescription("Please use codeblocks when sending code.");
 	embed.addField("Sending lots of code?", "Consider using a [GitHub Gist](http://gist.github.com).");
