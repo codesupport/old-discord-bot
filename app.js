@@ -77,3 +77,9 @@ client.on("message", (message) => {
 client.login(config.discord_token).then(() => {
 	console.log(`Successfully connected to Discord as '${client.user.username}'.`);
 }).catch(console.error);
+
+// Export dependencies so that they can be used throughout the program
+exports.config = config;
+exports.fileSystem = fileSystem;
+exports.Discord = Discord;
+exports.client = client;
