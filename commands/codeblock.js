@@ -15,8 +15,6 @@ const properties = {
 
 // The code that runs when the command is executed.
 function run(message) {
-	console.log("running");
-
 	const embed = new Discord.RichEmbed();
 	const image = new Discord.Attachment("./assets/codeblock.png", "codeblock-tutorial.png");
 
