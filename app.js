@@ -74,7 +74,7 @@ client.on("message", (message) => {
 });
 
 // Log the client in to establish a connection to Discord.
-client.login(config.discord_token).then(() => {
+client.login(process.env.DISCORD_TOKEN).then(() => {
 	console.log(`Successfully connected to Discord as '${client.user.username}'.`);
 }).catch(console.error);
 
