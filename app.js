@@ -4,11 +4,23 @@ const config = require("./config.json");
 // Package Dependencies
 const fileSystem = require("fs");
 const Discord = require("discord.js");
+const Sequelize = require("sequelize");
 
 // Setup the Discord Client
 const client = new Discord.Client({
 	fetchAllMembers: true
 });
+
+// Setup Sequelize to connect to MySQL
+const sql = new Sequelize(process.env.MYSQL_DATABASE, process.env.MYSQL_USER, process.env.MYSQL_PASSWORD, {
+	host: process.env.MYSQL_HOST,
+	dialect: "mysql",
+	logging: false
+});
+
+sql.authenticate().then(() => {
+	console.log(`Successfully connected to MySQL as '${process.env.MYSQL_USER}'.`);
+}).catch(console.error);
 
 // Create an object to store the command in.
 /* eslint-disable*/
@@ -83,3 +95,5 @@ exports.config = config;
 exports.fileSystem = fileSystem;
 exports.Discord = Discord;
 exports.client = client;
+exports.Sequelize = Sequelize;
+exports.sql = sql;
