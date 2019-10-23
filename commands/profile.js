@@ -117,9 +117,9 @@ function run(message, args) {
 						const embed = new Discord.RichEmbed();
 
 						embed.setTitle(`${userDatabaseId}'s Profile`);
-						embed.setDescription(`${userProfile.bio ? userProfile.bio : "Not Defined"}`);
-						embed.addField("Git", `${userProfile.git ? userProfile.git : "Not Defined"}`);
-						embed.addField("Country", `${userProfile.country ? userProfile.country : "Not Defined"}`);
+						embed.setDescription(`${userProfile.bio || "Not Defined"}`);
+						embed.addField("Git", `${userProfile.git || "Not Defined"}`);
+						embed.addField("Country", `${userProfile.country || "Not Defined"}`);
 
 						message.channel.send({embed});
 
