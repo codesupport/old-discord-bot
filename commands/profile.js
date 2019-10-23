@@ -14,7 +14,7 @@ const properties = {
 	prefix: true,
 	arguments: ["[id|username]"],
 	visible: true,
-	botchat: false
+	botchat: true
 };
 
 // The code that runs when the command is executed.
