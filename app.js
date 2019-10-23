@@ -52,7 +52,7 @@ client.on("message", (message) => {
 					break;
 				}
 			}
-			
+
 			if (properties.prefix) {
 				if (message.content.startsWith(config.prefix)) {
 					if (properties.arguments.length == 0) {
@@ -69,7 +69,7 @@ client.on("message", (message) => {
 						command.run(message, args);
 					}
 				}
-			}	
+			}
 		}
 	}
 
