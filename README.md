@@ -22,11 +22,11 @@
 3. Customise the properties to meet your liking:
 	- `command` is the command people will run e.g. `?profile` (don't include the prefix)
 	- `description` is the command's description, this is displayed in `?commands`
-	- `prefix` is a boolean which states whether or not the command requires a prefix to be ran (boolean value)
+	- `prefix` is a boolean which states whether or not the command requires a prefix to be ran
 	- `arguments` is an array of arguments, this is used to:
 		- decide how the command should be ran
 		- display the correct usage in `?commands`
-	- `visible` is a boolean which states whether or not the command appears in `?commands` (boolean value)
+	- `visible` is a boolean which states whether or not the command appears in `?commands`
 	- `botchat` is a boolean which states whether or not the command can only be executed in the bot chat
 4. Add all your logic into the `run()` function.
 
