@@ -25,14 +25,26 @@ sql.authenticate().then(() => {
 // Create an object to store the command in.
 /* eslint-disable*/
 let commands = {};
+let events = {};
 /* eslint-enable */
 
 // Run the command handler when the bot is ready.
 client.on("ready", () => {
 	fileSystem.readdir(config.commands_directory, (error, files) => {
+		console.log("Commands:");
 		for (const file of files) {
 			/* eslint-disable */
 			commands[file.replace(".js", "")] = require(`${config.commands_directory}/${file}`);
+			/* eslint-enable */
+			console.log(`+ ${file}`);
+		}
+	});
+
+	fileSystem.readdir(config.events_directory, (error, files) => {
+		console.log("Events:");
+		for (const file of files) {
+			/* eslint-disable */
+			events[file.replace(".js", "")] = require(`${config.events_directory}/${file}`);
 			/* eslint-enable */
 			console.log(`+ ${file}`);
 		}
@@ -83,6 +95,11 @@ client.on("message", (message) => {
 		}
 		message.channel.send({embed});
 	}
+});
+
+// Events
+client.on("messageUpdate", (oldMessage, newMessage) => {
+	events.messageUpdate.run(oldMessage, newMessage);
 });
 
 // Log the client in to establish a connection to Discord.
