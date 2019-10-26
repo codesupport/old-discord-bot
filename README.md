@@ -22,16 +22,16 @@
 3. Customise the properties to meet your liking:
 	- `command` is the command people will run e.g. `?profile` (don't include the prefix)
 	- `description` is the command's description, this is displayed in `?commands`
-	- `prefix` is wether or not the command requires a prefix to be ran
+	- `prefix` is a boolean which states whether or not the command requires a prefix to be ran (boolean value)
 	- `arguments` is an array of arguments, this is used to:
 		- decide how the command should be ran
 		- display the correct usage in `?commands`
-	- `visible` is wether or not the command appears in `?commands`
-	- `botchat` is wether or not the command can only be executed in the bot chat
+	- `visible` is a boolean which states whether or not the command appears in `?commands` (boolean value)
+	- `botchat` is a boolean which states whether or not the command can only be executed in the bot chat
 4. Add all your logic into the `run()` function.
 
 Notes:
 - If your command accepts arguments you will want to use [this](https://gist.github.com/LamboCreeper/21879a5cb2e56d1e70b66c038635188a) template instead
 - Use `<argument>` for required arguments and `[argument]` for optional arguments
 
-**Any Questions?** Feel free to mention @LamboCreeper#6510 in the CodeSupport Discord.
+**Any Questions?** Feel free to mention @LamboCreeper#6510 in the [CodeSupport Discord](https://discord.gg/Hn9SETt).
