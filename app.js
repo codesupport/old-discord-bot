@@ -30,6 +30,14 @@ let events = {};
 
 // Run the command handler when the bot is ready.
 client.on("ready", () => {
+	// Fetch the authentication message so that it is cached.
+	client.guilds.find((guild) => {
+		return guild.id == config.guild;
+	}).channels.find((channel) => {
+		return channel.id == config.authentication_channel;
+	}).fetchMessage(config.authentication_message);
+
+	// Add all the commands and events to their specific objects.
 	fileSystem.readdir(config.commands_directory, (error, files) => {
 		console.log("Commands:");
 		for (const file of files) {
