@@ -2,7 +2,6 @@
 const app = require("./../app.js");
 
 const config = app.config;
-const Discord = app.Discord;
 
 // The code that runs when the event is executed.
 function run(reaction, user) {
