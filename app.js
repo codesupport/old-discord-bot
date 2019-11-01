@@ -67,6 +67,12 @@ client.on("message", (message) => {
 		const args = message.content.split(" ");
 
 		if (args[0].replace(config.prefix, "") == properties.command) {
+			if (properties.botchat) {
+				if (message.channel.id != config.botchat) {
+					break;
+				}
+			}
+
 			if (properties.prefix) {
 				if (message.content.startsWith(config.prefix)) {
 					if (properties.arguments.length == 0) {
