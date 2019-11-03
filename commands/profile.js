@@ -77,55 +77,61 @@ function run(message, args) {
 				userDatabaseId = users[0].id;
 			}
 
-			UserProfile.findAll({
-				where: {
-					userId: userDatabaseId
-				}
-			}).then((users) => {
-				let userProfile;
+			const waitForUserCreation = setInterval(() => {
+				if (userDatabaseId) {
+					clearInterval(waitForUserCreation);
 
-				if (users.length == 0) {
-					const embed = new Discord.RichEmbed();
+					UserProfile.findAll({
+						where: {
+							userId: userDatabaseId
+						}
+					}).then((users) => {
+						let userProfile;
 
-					embed.setTitle("Error");
-					embed.setDescription("We could not find that user in the user profile database. Creating their record.");
+						if (users.length == 0) {
+							const embed = new Discord.RichEmbed();
 
-					message.channel.send({embed}).then((message) => {
-						message.delete(2500);
+							embed.setTitle("Error");
+							embed.setDescription("We could not find that user in the user profile database. Creating their record.");
+
+							message.channel.send({embed}).then((message) => {
+								message.delete(2500);
+							});
+
+							UserProfile.create({
+								userId: userDatabaseId
+							}).then((user) => {
+								const embed = new Discord.RichEmbed();
+
+								embed.setTitle("Success");
+								embed.setDescription("Created the user's record in the database.");
+
+								message.channel.send({embed}).then((message) => {
+									message.delete(2500);
+								});
+
+								userProfile = user;
+							});
+						} else {
+							userProfile = users[0];
+						}
+
+						const waitForProfileCreation = setInterval(() => {
+							if (userProfile) {
+								const embed = new Discord.RichEmbed();
+
+								embed.setTitle(`${userDatabaseId}'s Profile`);
+								embed.setDescription(`${userProfile.bio || "Not Defined"}`);
+								embed.addField("Git", `${userProfile.git || "Not Defined"}`);
+								embed.addField("Country", `${userProfile.country || "Not Defined"}`);
+
+								message.channel.send({embed});
+
+								clearInterval(waitForProfileCreation);
+							}
+						}, 1000);
 					});
-
-					UserProfile.create({
-						userId: userDatabaseId
-					}).then((user) => {
-						const embed = new Discord.RichEmbed();
-
-						embed.setTitle("Success");
-						embed.setDescription("Created the user's record in the database.");
-
-						message.channel.send({embed}).then((message) => {
-							message.delete(2500);
-						});
-
-						userProfile = user;
-					});
-				} else {
-					userProfile = users[0];
 				}
-
-				const waitForProfileCreation = setInterval(() => {
-					if (userProfile) {
-						const embed = new Discord.RichEmbed();
-
-						embed.setTitle(`${userDatabaseId}'s Profile`);
-						embed.setDescription(`${userProfile.bio || "Not Defined"}`);
-						embed.addField("Git", `${userProfile.git || "Not Defined"}`);
-						embed.addField("Country", `${userProfile.country || "Not Defined"}`);
-
-						message.channel.send({embed});
-
-						clearInterval(waitForProfileCreation);
-					}
-				}, 1000);
 			});
 		});
 	} else {
