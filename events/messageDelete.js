@@ -6,7 +6,7 @@ const Discord = app.Discord;
 
 // The code that runs when the event is executed.
 function run(message) {
-	if (message.content != "") {
+	if (message.content) {
 		const logsChannel = message.guild.channels.find((channel) => {
 			return channel.id == config.logs_channel;
 		});
