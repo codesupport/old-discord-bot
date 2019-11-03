@@ -6,16 +6,18 @@ const Discord = app.Discord;
 
 // The code that runs when the event is executed.
 function run(message) {
-	const logsChannel = message.guild.channels.find((channel) => {
-		return channel.id == config.logs_channel;
-	});
-	const embed = new Discord.RichEmbed();
+	if (message.content != "") {
+		const logsChannel = message.guild.channels.find((channel) => {
+			return channel.id == config.logs_channel;
+		});
+		const embed = new Discord.RichEmbed();
 
-	embed.setTitle("Message Deleted");
-	embed.setDescription(`Author: ${message.author}\nChannel: ${message.channel}`);
-	embed.addField("Message", message.content);
+		embed.setTitle("Message Deleted");
+		embed.setDescription(`Author: ${message.author}\nChannel: ${message.channel}`);
+		embed.addField("Message", message.content);
 
-	logsChannel.send({embed});
+		logsChannel.send({embed});
+	}
 }
 
 // Export the data
