@@ -1,15 +1,11 @@
 name: CI
-
 on: [pull_request]
-
 jobs:
-  build:
-
+  test:
     runs-on: ubuntu-latest
-    
     steps:
     - uses: actions/checkout@v1
     - name: Runs ESLint
       run: |
-        npm i 
+        npm i
         npm run lint
