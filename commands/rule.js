@@ -33,7 +33,7 @@ function run(message, args) {
 			"6|privacy": "Don't share private information with anyone! (you’re just asking to be hacked)",
 			"7|advertising": "Don't advertise, it's as simple as that.",
 			"8|channel": "Stick to the appropriate channels. Feel free to ask in [#general](https://discord.gg/qZfADKn) if you're not sure where to ask something.",
-			"9|codeblock": "When posting code, please use code blocks (see `!codeblock` for help).",
+			"9|codeblock": "When posting code, please use code blocks (see `?codeblock` for help).",
 			"10|bot": "Don't ask for your bot to be added. It won’t be.",
 			"11|verified": "Don't ask to become Verified: doing so will make it less likely.",
 			"12|dms": "Don't DM people (unless it's for #hiring-or-looking), the knowledge shared here is for the benefit of everyone.",
