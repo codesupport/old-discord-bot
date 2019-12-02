@@ -3,6 +3,9 @@ const app = require("./../app.js");
 
 const Discord = app.Discord;
 
+// Helpers
+const { getMonth } = require("./../helpers/date.js");
+
 // Database Models
 const User = require("./../models/User.js");
 const UserProfile = require("./../models/UserProfile.js");
@@ -119,11 +122,13 @@ function run(message, args) {
 						const waitForProfileCreation = setInterval(() => {
 							if (userProfile) {
 								const embed = new Discord.RichEmbed();
+								const joined = guildMember.joinedAt;
 
 								embed.setTitle(`${userDatabaseId}'s Profile`);
 								embed.setDescription(`${userProfile.bio || "Not Defined"}`);
 								embed.addField("Git", `${userProfile.git || "Not Defined"}`);
 								embed.addField("Country", `${userProfile.country || "Not Defined"}`);
+								embed.addField("Join Date", `${joined.getDate()} ${getMonth(joined)} ${joined.getFullYear()}`);
 
 								message.channel.send({embed});
 
