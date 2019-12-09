@@ -1,19 +1,19 @@
 const color = {
-  red: string => {
-    return '\x1b[31m' + string + '\x1b[37m';
-  },
+	red: (stringValue) => {
+		return `\x1b[31m${stringValue}\x1b[37m`;
+	},
 
-  yellow: string => {
-    return '\x1b[33m' + string + '\x1b[37m';
-  },
+	yellow: (stringValue) => {
+		return `\x1b[33m${stringValue}\x1b[37m`;
+	},
 
-  green: string => {
-    return '\x1b[32m' + string + '\x1b[37m';
-  },
+	green: (stringValue) => {
+		return `\x1b[32m${stringValue}\x1b[37m`;
+	},
 
-  cyan: string => {
-    return '\x1b[36m' + string + '\x1b[37m';
-  }
-}
+	cyan: (stringValue) => {
+		return `\x1b[36m${stringValue}\x1b[37m`;
+	}
+};
 
-exports.color = color
+exports.color = color;

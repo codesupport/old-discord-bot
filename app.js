@@ -1,5 +1,5 @@
 // Utilities
-const Log = require('./logging/logging.js');
+const Log = require("./logging/logging.js");
 
 // Local Dependencies
 const config = require("./config.json");
