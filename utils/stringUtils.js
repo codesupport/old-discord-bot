@@ -22,7 +22,7 @@ function isString(object) {
  * object - The object to check.
  */
 function isEmpty(object) {
-	return typeof object === undefined ||
+	return object === undefined ||
     isString(object) && object.trim() === "";
 }
 
