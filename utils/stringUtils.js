@@ -2,9 +2,6 @@
  * Utility class for performing String related logic.
  */
 
-// Dependencies
-const ArrayUtils = require("./arrayUtils.js");
-
 /*
  * Checks if the object is a string.
  *
@@ -42,7 +39,7 @@ function match(regex, object) {
 	if (typeof object === "string") {
 		const matchResult = object.match(regex);
 
-		if (ArrayUtils.isArray(matchResult)) {
+		if (Array.isArray(matchResult)) {
 			matcher.isMatch = true;
 			matcher.match = matchResult;
 		} else {

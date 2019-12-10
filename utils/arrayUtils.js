@@ -3,23 +3,13 @@
  */
 
 /*
- * Checks if the object is an array.
- *
- * Parameters:
- * object - The object to check.
- */
-function isArray(object) {
-	return typeof object === "object" && object.length !== undefined;
-}
-
-/*
  * Checks if the object is an array and is empty.
  *
  * Parameters:
  * object - The object to check.
  */
 function isEmpty(object) {
-	return isArray(object) && object.length === 0;
+	return Array.isArray(object) && object.length === 0;
 }
 
 /*
@@ -35,6 +25,5 @@ function contains(array, object) {
 	}).length > 0;
 }
 
-exports.isArray = isArray;
 exports.isEmpty = isEmpty;
 exports.contains = contains;
