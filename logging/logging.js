@@ -90,20 +90,6 @@ const Logger = (() => {
 	}
 
 	/*
-	 * Replaces the message placeholder in the passed format.
-	 *
-	 * Parameters:
-	 * logFormat - The log format string to parse.
-	 * message - The message to inject.
-	 */
-	function formatMessage(logFormat, message) {
-		let logValue = logFormat;
-
-		logValue = logValue.replace("%s", message);
-		return logValue;
-	}
-
-	/*
 	 * Parses the format, replacing placeholders with desired values.
 	 *
 	 * Parameters:
@@ -114,7 +100,7 @@ const Logger = (() => {
 		let logValue = formatDate(logFormat);
 
 		logValue = formatLevel(logValue, logObject.level);
-		logValue = formatMessage(logValue, logObject.message);
+		logValue = logFormat.replace("%s", message);
 		return logValue;
 	}
 
