@@ -4,30 +4,10 @@
 
 // Dependencies
 const NumberUtils = require("./numberUtils.js");
+const StringUtils = require("./stringUtils.js");
 
-/*
- * Pads the passed string with leading 0's
- *
- * Parameters:
- * object - The object to pad.
- * padding - The amount of padding to add.
- */
-function padZero(object, padding) {
-	let stringValue;
-
-	if (NumberUtils.isPositiveNumber(padding)) {
-		stringValue = `${object}`;
-
-		for (let x = Math.pow(10, padding - 1); x > 1; x /= 10) {
-			if (Math.floor(object / x) === 0) {
-				stringValue = `0${stringValue}`;
-			}
-		}
-	} else {
-		throw `'padding' must be a positive number, (${padding})`;
-	}
-	return stringValue;
-}
+// Static references
+const padString = StringUtils.padString;
 
 const monthsOfYear = [
 	"January",
@@ -75,44 +55,52 @@ const daysOfWeek = [
  * Parameters:
  * date - The date to parse.
  */
-function DateFormat(date) {
-	this.Y = date.getFullYear();
-	this.M = monthsOfYear[date.getMonth()];
-	this.N = monthsOfYear[date.getMonth()].substr(0, 3);
-	this.m = padZero(date.getMonth() + 1, 2);
-	this.d = padZero(date.getDate(), 2);
-	this.H = padZero(date.getHours(), 2);
-	this.h = padZero(date.getHours() % 12, 2);
-	this.i = padZero(date.getMinutes(), 2);
-	this.s = padZero(date.getSeconds(), 2);
-	this.S = padZero(date.getMilliseconds(), 3);
-	this.o = NumberUtils.ordinal(date.getDate());
-	this.a = Math.floor(date.getHours() / 12) > 1 ? "PM" : "AM";
-	this.E = daysOfWeek[date.getDay()];
-	this.e = daysOfWeek[date.getDay()].substr(0, 3);
+class DateFormat {
+	constructor(date) {
+		this.Y = date.getFullYear();
+		this.M = monthsOfYear[date.getMonth()];
+		this.N = monthsOfYear[date.getMonth()].substr(0, 3);
+		this.m = padString(date.getMonth() + 1, -2, 0);
+		this.d = padString(date.getDate(), -2, 0);
+		this.H = padString(date.getHours(), -2, 0);
+		this.h = padString(date.getHours() % 12, -2, 0);
+		this.i = padString(date.getMinutes(), -2, 0);
+		this.s = padString(date.getSeconds(), -2, 0);
+		this.S = padString(date.getMilliseconds(), -3, 0);
+		this.o = NumberUtils.ordinal(date.getDate());
+		this.a = Math.floor(date.getHours() / 12) > 1 ? "PM" : "AM";
+		this.E = daysOfWeek[date.getDay()];
+		this.e = daysOfWeek[date.getDay()].substr(0, 3);
+	}
+
+	format(formatString) {
+		let formattedDate = "";
+
+		for (let i = 0; i < formatString.length; i++) {
+			const char = formatString.substr(i, 1);
+
+			formattedDate += this[char] !== undefined ? this[char] : char;
+		}
+		return formattedDate;
+	}
 }
 
 /*
  * Creates a date string with the passed format for the passed date
  *
  * Parameters:
- * format - The date string format to parse.
+ * formatString - The date format string format to parse.
  * date - The date to apply to the parsed format string.
  */
-function format(format, date) {
-	let formattedDate = "";
-
+function format(formatString, date) {
 	if (date !== undefined && typeof date.getDate === "function") {
-		dateFormat = new DateFormat(date);
-		for (let i = 0; i < format.length; i++) {
-			const char = format.substr(i, 1);
+		const dateFormat = new DateFormat(date);
+		const formattedDate = dateFormat.format(formatString);
 
-			formattedDate += dateFormat[char] !== undefined ? dateFormat[char] : char;
-		}
-	} else {
-		throw "date expected to be a Date()";
+		return formattedDate;
 	}
-	return formattedDate;
+
+	throw "date expected to be a Date()";
 }
 
 exports.format = format;

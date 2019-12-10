@@ -2,6 +2,12 @@
  * Utility class for performing String related logic.
  */
 
+// Dependencies
+const NumberUtils = require("./numberUtils.js");
+
+// Static references
+const isNumber = NumberUtils.isNumber;
+
 /*
  * Checks if the object is a string.
  *
@@ -51,5 +57,42 @@ function match(regex, object) {
 	return matcher;
 }
 
+/*
+ * Pads the passed string with leading/ensuing chars
+ *
+ * Parameters:
+ * object - The object to pad. Can be string|number.
+ * padding - The amount of padding to add. Negative pads left, positive pads right.
+ * char - The character to pad with.
+ */
+function padString(object, padding, char) {
+	let stringValue;
+
+	if (!isEmpty(object) || isNumber(object)) {
+		if (isNumber(padding)) {
+			if (!isEmpty(char) || isNumber(char)) {
+				const stringLengthMultiplier = Math.pow(10, `${object}`.length - 1);
+				const absPadding = Math.abs(padding);
+
+				stringValue = `${object}`;
+				for (let x = Math.pow(10, absPadding - 1); x > 1; x /= 10) {
+					if (Math.floor(stringLengthMultiplier / x) === 0) {
+						stringValue = padding < 0 ? `${char}${stringValue}` : `${stringValue}${char}`;
+					}
+				}
+			} else {
+				throw "'char' must be a string or a number.";
+			}
+		} else {
+			throw "'padding' must be a number.";
+		}
+	} else {
+		throw "'object' must be a string or a number.";
+	}
+
+	return stringValue;
+}
+
 exports.isEmpty = isEmpty;
 exports.match = match;
+exports.padString = padString;
