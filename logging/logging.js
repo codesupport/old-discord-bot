@@ -144,9 +144,7 @@ function log(level, object) {
 
 	if (ArrayUtils.contains(printableTypes, typeof object)) {
 		console.log(
-			format(loggerPattern, logObject),
-			// `[${DateUtils.format("Y-m-d H:i:s", new Date())}] |${colorPallet[level.toLowerCase()](level.padEnd(5))}| %s`,
-			object
+			format(loggerPattern, logObject)
 		);
 	} else {
 		throw "Cannot log objects of this type.";
