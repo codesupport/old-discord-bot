@@ -3,10 +3,7 @@
  */
 
 // Dependencies
-const NumberUtils = require("./numberUtils.js");
-
-// Static references
-const isNumber = NumberUtils.isNumber;
+const {isNumber} = require("./numberUtils.js");
 
 /*
  * Checks if the object is a string.

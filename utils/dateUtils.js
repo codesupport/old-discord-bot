@@ -4,10 +4,7 @@
 
 // Dependencies
 const NumberUtils = require("./numberUtils.js");
-const StringUtils = require("./stringUtils.js");
-
-// Static references
-const padString = StringUtils.padString;
+const {padString} = require("./stringUtils.js");
 
 const monthsOfYear = [
 	"January",
