@@ -68,7 +68,7 @@ class DateFormat {
 		this.s = padString(date.getSeconds(), -2, 0);
 		this.S = padString(date.getMilliseconds(), -3, 0);
 		this.o = NumberUtils.ordinal(date.getDate());
-		this.a = Math.floor(date.getHours() / 12) > 1 ? "PM" : "AM";
+		this.a = Math.floor(date.getHours() / 12) >= 1 ? "PM" : "AM";
 		this.E = daysOfWeek[date.getDay()];
 		this.e = daysOfWeek[date.getDay()].substr(0, 3);
 	}
