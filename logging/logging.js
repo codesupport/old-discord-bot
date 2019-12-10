@@ -198,6 +198,15 @@ const Logger = (() => {
 	};
 
 	/*
+	 * Checks to see if the LOG_PATTERN environment variable has been set.
+	 */
+	if (typeof process.env.LOG_PATTERN === "string") {
+		loggerPattern = process.env.LOG_PATTERN;
+	} else {
+		publicMethods.info("Log pattern not set, using default");
+	}
+
+	/*
 	 * Checks to see if the LOG_LEVEL environment variable has been set.
 	 */
 	if (process.env.LOG_LEVEL !== undefined) {
@@ -205,20 +214,12 @@ const Logger = (() => {
 
 		if (logLevels[logLevel] !== undefined) {
 			loggerLogLevel = logLevel;
+			publicMethods.info(`Log level set to ${colorPallet[loggerLogLevel.toLowerCase()](loggerLogLevel)}`);
 		} else {
-			warn(`Log level invalid, defaulting to ${colorPallet[loggerLogLevel.toLowerCase()](loggerLogLevel)}`);
+			publicMethods.warn(`Log level invalid, defaulting to ${colorPallet[loggerLogLevel.toLowerCase()](loggerLogLevel)}`);
 		}
 	} else {
-		info(`Log level not set, defaulting to ${colorPallet[loggerLogLevel.toLowerCase()](loggerLogLevel)}`);
-	}
-
-	/*
-	 * Checks to see if the LOG_PATTERN environment variable has been set.
-	 */
-	if (typeof process.env.LOG_PATTERN === "string") {
-		loggerPattern = process.env.LOG_PATTERN;
-	} else {
-		info(`Log pattern not set, defaulting to ${loggerPattern}`);
+		publicMethods.info(`Log level not set, defaulting to ${colorPallet[loggerLogLevel.toLowerCase()](loggerLogLevel)}`);
 	}
 
 	return publicMethods;
