@@ -1,8 +1,7 @@
-// Utilities
-const Log = require("./logging/logging.js");
 
 // Local Dependencies
 const config = require("./config.json");
+const Log = require("./logging/logging.js");
 
 // Package Dependencies
 const fileSystem = require("fs");
