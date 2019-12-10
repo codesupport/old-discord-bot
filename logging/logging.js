@@ -18,7 +18,6 @@
  */
 
 // Dependencies
-const ArrayUtils = require("../utils/arrayUtils.js");
 const DateUtils = require("../utils/dateUtils.js");
 const StringUtils = require("../utils/stringUtils.js");
 const Terminal = require("./terminal.js");
@@ -39,8 +38,7 @@ const Logger = (() => {
 	const WARN = "WARN";
 	const ERROR = "ERROR";
 
-	const logLevels = [DEBUG, INFO, WARN, ERROR];
-	const logLevelIndex = {DEBUG: 0, INFO: 1, WARN: 2, ERROR: 3};
+	const logLevels = {DEBUG: 0, INFO: 1, WARN: 2, ERROR: 3};
 	let loggerLogLevel = DEBUG;
 	let loggerPattern = "[%d{Y-m-d H:i:s.S}] | %-5l | %s";
 
@@ -121,17 +119,11 @@ const Logger = (() => {
 	}
 
 	/*
-	 * Gets the index of the passed log level.
-	 *
-	 * Parameters:
-	 * level - The level you want the associated index for.
+	 * Checks if the provided log level is equal to or higher then the configured
+	 * root log level.
 	 */
-	function logIndex(level) {
-		return logLevelIndex[level];
-	}
-
 	function isLevelEnabled(level) {
-		return logIndex(loggerLogLevel) <= logIndex(level);
+		return logLevels[loggerLogLevel] <= logLevels[level];
 	}
 
 	/*
@@ -143,9 +135,10 @@ const Logger = (() => {
 	 */
 	function log(level, object) {
 		const printableTypes = ["string", "number", "boolean"];
-		const logObject = {level, message: object};
 
-		if (ArrayUtils.contains(printableTypes, typeof object)) {
+		if (printableTypes.includes(typeof object)) {
+			const logObject = {level, message: `${object}`};
+
 			console.log(
 				format(loggerPattern, logObject)
 			);
@@ -210,7 +203,7 @@ const Logger = (() => {
 	if (process.env.LOG_LEVEL !== undefined) {
 		const logLevel = process.env.LOG_LEVEL;
 
-		if (ArrayUtils.contains(logLevels, logLevel)) {
+		if (logLevels[logLevel] !== undefined) {
 			loggerLogLevel = logLevel;
 		} else {
 			warn(`Log level invalid, defaulting to ${colorPallet[loggerLogLevel.toLowerCase()](loggerLogLevel)}`);
