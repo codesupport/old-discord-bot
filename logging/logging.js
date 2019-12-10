@@ -34,9 +34,14 @@ const Logger = (() => {
 		debug: Terminal.color.green
 	};
 
-	const logLevels = ["DEBUG", "INFO", "WARN", "ERROR"];
-	const logLevelIndex = {"DEBUG": 0, "INFO": 1, "WARN": 2, "ERROR": 3};
-	let loggerLogLevel = "DEBUG";
+	const DEBUG = "DEBUG";
+	const INFO = "INFO";
+	const WARN = "WARN";
+	const ERROR = "ERROR";
+
+	const logLevels = [DEBUG, INFO, WARN, ERROR];
+	const logLevelIndex = {DEBUG: 0, INFO: 1, WARN: 2, ERROR: 3};
+	let loggerLogLevel = DEBUG;
 	let loggerPattern = "[%d{Y-m-d H:i:s.S}] | %-5l | %s";
 
 	/*
@@ -158,8 +163,8 @@ const Logger = (() => {
 	 * object - The object to log.
 	 */
 	publicMethods.debug = (object) => {
-		if (isLevelEnabled("DEBUG")) {
-			log("DEBUG", object);
+		if (isLevelEnabled(DEBUG)) {
+			log(DEBUG, object);
 		}
 	};
 
@@ -170,8 +175,8 @@ const Logger = (() => {
 	 * object - The object to log.
 	 */
 	publicMethods.info = (object) => {
-		if (isLevelEnabled("INFO")) {
-			log("INFO", object);
+		if (isLevelEnabled(INFO)) {
+			log(INFO, object);
 		}
 	};
 
@@ -182,8 +187,8 @@ const Logger = (() => {
 	 * object - The object to log.
 	 */
 	publicMethods.warn = (object) => {
-		if (isLevelEnabled("WARN")) {
-			log("WARN", object);
+		if (isLevelEnabled(WARN)) {
+			log(WARN, object);
 		}
 	};
 
@@ -194,8 +199,8 @@ const Logger = (() => {
 	 * object - The object to log.
 	 */
 	publicMethods.error = (object) => {
-		if (isLevelEnabled("ERROR")) {
-			log("ERROR", object);
+		if (isLevelEnabled(ERROR)) {
+			log(ERROR, object);
 		}
 	};
 
