@@ -4,12 +4,13 @@
 
 /*
  * Checks if the object is an array and is empty.
+ * Returns true if empty array or if it is not an array.
  *
  * Parameters:
  * object - The object to check.
  */
 function isEmpty(object) {
-	return Array.isArray(object) && object.length === 0;
+	return !Array.isArray(object) || object.length === 0;
 }
 
 /*
@@ -20,9 +21,7 @@ function isEmpty(object) {
  * object - The object to look for.
  */
 function contains(array, object) {
-	return !isEmpty(array) && array.filter((o) => {
-		return o === object;
-	}).length > 0;
+	return !isEmpty(array) && array.includes(object);
 }
 
 exports.isEmpty = isEmpty;
