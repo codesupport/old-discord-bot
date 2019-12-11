@@ -100,7 +100,7 @@ const Logger = (() => {
 		let logValue = formatDate(logFormat);
 
 		logValue = formatLevel(logValue, logObject.level);
-		logValue = logFormat.replace("%s", message);
+		logValue = logFormat.replace("%s", logObject.message);
 		return logValue;
 	}
 
