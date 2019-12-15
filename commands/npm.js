@@ -1,5 +1,6 @@
 // Dependencies
 const app = require("./../app.js");
+const request = require("request-promise-native");
 
 const Discord = app.Discord;
 
@@ -14,7 +15,7 @@ const properties = {
 };
 
 // The code that runs when the command is executed.
-function run(message, args) {
+async function run(message, args) {
 	if (typeof args[1] == "undefined") {
 		const embed = new Discord.RichEmbed();
 
@@ -24,7 +25,24 @@ function run(message, args) {
 
 		message.channel.send({embed});
 	} else {
-		message.channel.send(`https://www.npmjs.com/package/${args[1]}`);
+		try {
+			const data = await request({
+				uri: `https://www.npmjs.com/package/${args[1]}`,
+				method: "GET",
+				resolveWithFullResponse: true
+			});
+
+			if (data.statusCode == 200) {
+				message.channel.send(`https://www.npmjs.com/package/${args[1]}`);
+			}
+		} catch (error) {
+			const embed = new Discord.RichEmbed();
+
+			embed.setTitle("Error");
+			embed.setDescription("That is not a valid NPM package.");
+
+			message.channel.send({embed});
+		}
 	}
 }
 
