@@ -1,5 +1,7 @@
+
 // Local Dependencies
 const config = require("./config.json");
+const Log = require("./logging/logging.js");
 
 // Package Dependencies
 const fileSystem = require("fs");
@@ -19,7 +21,7 @@ const sql = new Sequelize(process.env.MYSQL_DATABASE, process.env.MYSQL_USER, pr
 });
 
 sql.authenticate().then(() => {
-	console.log(`Successfully connected to MySQL as '${process.env.MYSQL_USER}'.`);
+	Log.info(`Successfully connected to MySQL as '${process.env.MYSQL_USER}'.`);
 }).catch(console.error);
 
 // Create an object to store the command in.
@@ -39,22 +41,22 @@ client.on("ready", () => {
 
 	// Add all the commands and events to their specific objects.
 	fileSystem.readdir(config.commands_directory, (error, files) => {
-		console.log("Commands:");
+		Log.debug("Commands:");
 		for (const file of files) {
 			/* eslint-disable */
 			commands[file.replace(".js", "")] = require(`${config.commands_directory}/${file}`);
 			/* eslint-enable */
-			console.log(`+ ${file}`);
+			Log.debug(`+ ${file}`);
 		}
 	});
 
 	fileSystem.readdir(config.events_directory, (error, files) => {
-		console.log("Events:");
+		Log.debug("Events:");
 		for (const file of files) {
 			/* eslint-disable */
 			events[file.replace(".js", "")] = require(`${config.events_directory}/${file}`);
 			/* eslint-enable */
-			console.log(`+ ${file}`);
+			Log.debug(`+ ${file}`);
 		}
 	});
 });
@@ -130,7 +132,7 @@ client.on("guildMemberAdd", (member) => {
 
 // Log the client in to establish a connection to Discord.
 client.login(process.env.DISCORD_TOKEN).then(() => {
-	console.log(`Successfully connected to Discord as '${client.user.username}'.`);
+	Log.info(`Successfully connected to Discord as '${client.user.username}'.`);
 }).catch(console.error);
 
 // Export dependencies so that they can be used throughout the program
