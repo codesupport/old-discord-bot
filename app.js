@@ -1,6 +1,3 @@
-
-dotenv.config();
-
 // Package Dependencies
 const fileSystem = require("fs");
 const Discord = require("discord.js");
