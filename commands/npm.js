@@ -1,5 +1,5 @@
 // Dependencies
-const app = require("./../app.js");
+const app = require(`${_ROOT_DIR}/app.js`);
 const request = require("request-promise-native");
 
 const Discord = app.Discord;
@@ -8,10 +8,10 @@ const Discord = app.Discord;
 const properties = {
 	command: "npm",
 	description: "Displays a link to a given NPM package in the chat.",
-	prefix: true,
+	hasPrefix: true,
 	arguments: ["<package>"],
-	visible: true,
-	botchat: false
+	isVisible: true,
+	isBotChat: false
 };
 
 // The code that runs when the command is executed.
