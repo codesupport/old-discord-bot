@@ -1,5 +1,5 @@
 // Dependencies
-const app = require("./../app.js");
+const app = require(`${_ROOT_DIR}/app.js`);
 
 const config = app.config;
 
@@ -16,3 +16,4 @@ function run(reaction, user) {
 
 // Export the data
 exports.run = run;
+exports.event = "messageReactionAdd";

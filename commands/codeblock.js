@@ -1,5 +1,5 @@
 // Dependencies
-const app = require("./../app.js");
+const app = require(`${_ROOT_DIR}/app.js`);
 
 const Discord = app.Discord;
 
@@ -7,10 +7,10 @@ const Discord = app.Discord;
 const properties = {
 	command: "codeblock",
 	description: "Shows a tutorial on how to use Discord's codeblocks.",
-	prefix: true,
+	hasPrefix: true,
 	arguments: [],
-	visible: true,
-	botchat: false
+	isVisible: true,
+	isBotChat: false
 };
 
 // The code that runs when the command is executed.

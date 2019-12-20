@@ -18,9 +18,10 @@
  */
 
 // Dependencies
-const DateUtils = require("../utils/dateUtils.js");
-const StringUtils = require("../utils/stringUtils.js");
-const Terminal = require("./terminal.js");
+const DateUtils = require(`${_ROOT_DIR}/utils/dateUtils.js`);
+const StringUtils = require(`${_ROOT_DIR}/utils/stringUtils.js`);
+const Terminal = require(`${_ROOT_DIR}/logging/terminal.js`);
+const {isNull} = require(`${_ROOT_DIR}/utils/objectUtils.js`);
 
 const Logger = (() => {
 /*
@@ -39,6 +40,7 @@ const Logger = (() => {
 	const ERROR = "ERROR";
 
 	const logLevels = {DEBUG: 0, INFO: 1, WARN: 2, ERROR: 3};
+	const logConsoleFunction = {DEBUG: console.log, INFO: console.info, WARN: console.warn, ERROR: console.error};
 	let loggerLogLevel = DEBUG;
 	let loggerPattern = "[%d{Y-m-d H:i:s.S}] | %-5l | %s";
 
@@ -76,7 +78,7 @@ const Logger = (() => {
 			const levelRegex = matcher.match[0];
 			const levelPadding = matcher.match[1];
 
-			if (levelPadding !== undefined) {
+			if (!isNull(levelPadding)) {
 				const padAmount = levelPadding.substr(1);
 
 				logValue = logValue.replace(
@@ -125,7 +127,7 @@ const Logger = (() => {
 		if (printableTypes.includes(typeof object)) {
 			const logObject = {level, message: `${object}`};
 
-			console.log(
+			logConsoleFunction[level](
 				format(loggerPattern, logObject)
 			);
 		} else {
@@ -195,10 +197,10 @@ const Logger = (() => {
 	/*
 	 * Checks to see if the LOG_LEVEL environment variable has been set.
 	 */
-	if (process.env.LOG_LEVEL !== undefined) {
+	if (!isNull(process.env.LOG_LEVEL)) {
 		const logLevel = process.env.LOG_LEVEL;
 
-		if (logLevels[logLevel] !== undefined) {
+		if (!isNull(logLevels[logLevel])) {
 			loggerLogLevel = logLevel;
 			publicMethods.info(`Log level set to ${colorPallet[loggerLogLevel.toLowerCase()](loggerLogLevel)}`);
 		} else {

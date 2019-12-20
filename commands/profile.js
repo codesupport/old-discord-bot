@@ -1,23 +1,23 @@
 // Dependencies
-const app = require("./../app.js");
+const app = require(`${_ROOT_DIR}/app.js`);
 
 const Discord = app.Discord;
 
 // Helpers
-const { getMonth } = require("./../helpers/date.js");
+const { getMonth } = require(`${_ROOT_DIR}/helpers/date.js`);
 
 // Database Models
-const User = require("./../models/User.js");
-const UserProfile = require("./../models/UserProfile.js");
+const User = require(`${_ROOT_DIR}/models/User.js`);
+const UserProfile = require(`${_ROOT_DIR}/models/UserProfile.js`);
 
 // Set the command's properties
 const properties = {
 	command: "profile",
 	description: "Get a user's profile.",
-	prefix: true,
+	hasPrefix: true,
 	arguments: ["[id|username]"],
-	visible: true,
-	botchat: true
+	isVisible: true,
+	isBotChat: true
 };
 
 // The code that runs when the command is executed.

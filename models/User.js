@@ -1,5 +1,5 @@
 // Dependencies
-const app = require("./../app.js");
+const app = require(`${_ROOT_DIR}/app.js`);
 
 const Sequelize = app.Sequelize;
 const sql = app.sql;

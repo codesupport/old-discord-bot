@@ -1,12 +1,24 @@
-
-// Local Dependencies
-const config = require("./config.json");
-const Log = require("./logging/logging.js");
-
 // Package Dependencies
 const fileSystem = require("fs");
 const Discord = require("discord.js");
 const Sequelize = require("sequelize");
+const path = require("path");
+
+// Global variables
+global._ROOT_DIR = path.resolve(__dirname);
+
+// Local Dependencies
+const config = require(`${_ROOT_DIR}/config.json`);
+const commands = require(`${_ROOT_DIR}/app/Commands.js`);
+const events = require(`${_ROOT_DIR}/app/Events.js`);
+const Log = require(`${_ROOT_DIR}/logging/logging.js`);
+const AppLoader = require(`${_ROOT_DIR}/app/appLoader.js`);
+
+// String constants
+const MESSAGE_UPDATE = "messageUpdate";
+const MESSAGE_DELETE = "messageDelete";
+const MESSAGE_REACTION_ADD = "messageReactionAdd";
+const GUILD_MEMBER_ADD = "guildMemberAdd";
 
 // Setup the Discord Client
 const client = new Discord.Client({
@@ -22,112 +34,51 @@ const sql = new Sequelize(process.env.MYSQL_DATABASE, process.env.MYSQL_USER, pr
 
 sql.authenticate().then(() => {
 	Log.info(`Successfully connected to MySQL as '${process.env.MYSQL_USER}'.`);
-}).catch(console.error);
-
-// Create an object to store the command in.
-/* eslint-disable*/
-let commands = {};
-let events = {};
-/* eslint-enable */
+}).catch((error) => {
+	Log.error(`Failed to connect to DB (${error.original.address}:${error.original.port}) - ${error.name}`);
+	Log.error(`Reason: ${error.original.code}`);
+	process.exit(1);
+});
 
 // Run the command handler when the bot is ready.
 client.on("ready", () => {
-	// Fetch the authentication message so that it is cached.
-	client.guilds.find((guild) => {
-		return guild.id == config.guild;
-	}).channels.find((channel) => {
-		return channel.id == config.authentication_channel;
-	}).fetchMessage(config.authentication_message);
-
-	// Add all the commands and events to their specific objects.
-	fileSystem.readdir(config.commands_directory, (error, files) => {
-		Log.debug("Commands:");
-		for (const file of files) {
-			/* eslint-disable */
-			commands[file.replace(".js", "")] = require(`${config.commands_directory}/${file}`);
-			/* eslint-enable */
-			Log.debug(`+ ${file}`);
-		}
-	});
-
-	fileSystem.readdir(config.events_directory, (error, files) => {
-		Log.debug("Events:");
-		for (const file of files) {
-			/* eslint-disable */
-			events[file.replace(".js", "")] = require(`${config.events_directory}/${file}`);
-			/* eslint-enable */
-			Log.debug(`+ ${file}`);
-		}
-	});
+	AppLoader.setClient(client);
+	AppLoader.setConfig(config);
+	AppLoader.loadResources({commands, events});
 });
 
 // Run when a message is sent
 client.on("message", (message) => {
-	for (const commandFile in commands) {
-		const command = commands[commandFile];
-		const properties = command.properties;
-		const args = message.content.split(" ");
+	const args = message.content.split(" ");
 
-		if (args[0].replace(config.prefix, "") == properties.command) {
-			if (properties.botchat) {
-				if (message.channel.id != config.botchat) {
-					break;
-				}
-			}
+	if (commands.hasCommand(args[0])) {
+		const command = commands.getCommand(args[0]);
 
-			if (properties.prefix) {
-				if (message.content.startsWith(config.prefix)) {
-					if (properties.arguments.length == 0) {
-						command.run(message);
-					} else {
-						command.run(message, args);
-					}
-				}
+		if (!command.isBotChat || message.channel.id === config.botchat) {
+			if (command.hasArguments) {
+				command.run(message, args);
 			} else {
-				if (message.content.startsWith(properties.command)) {
-					if (properties.arguments.length == 0) {
-						command.run(message);
-					} else {
-						command.run(message, args);
-					}
-				}
+				command.run(message);
 			}
 		}
-	}
-
-	if (message.content.startsWith(`${config.prefix}commands`)) {
-		const embed = new Discord.RichEmbed();
-
-		embed.setTitle("Commands");
-		for (const commandFile in commands) {
-			const properties = commands[commandFile].properties;
-
-			if (properties.visible) {
-				const command = properties.prefix ? `${config.prefix}${properties.command}` : properties.command;
-				const arguments = properties.arguments.length == 0 ? "" : properties.arguments.toString().replace(new RegExp(",", "g"), " ");
-
-				embed.addField(`${command} ${arguments}`, properties.description, true);
-			}
-		}
-		message.channel.send({embed});
 	}
 });
 
 // Events
-client.on("messageUpdate", (oldMessage, newMessage) => {
-	events.messageUpdate.run(oldMessage, newMessage);
+client.on(MESSAGE_UPDATE, (oldMessage, newMessage) => {
+	events.getEvent(MESSAGE_UPDATE).run(oldMessage, newMessage);
 });
 
-client.on("messageDelete", (message) => {
-	events.messageDelete.run(message);
+client.on(MESSAGE_DELETE, (message) => {
+	events.getEvent(MESSAGE_DELETE).run(message);
 });
 
-client.on("messageReactionAdd", (reaction, user) => {
-	events.messageReactionAdd.run(reaction, user);
+client.on(MESSAGE_REACTION_ADD, (reaction, user) => {
+	events.getEvent(MESSAGE_REACTION_ADD).run(reaction, user);
 });
 
-client.on("guildMemberAdd", (member) => {
-	events.guildMemberAdd.run(member);
+client.on(GUILD_MEMBER_ADD, (member) => {
+	events.getEvent(GUILD_MEMBER_ADD).run(member);
 });
 
 // Log the client in to establish a connection to Discord.
@@ -142,3 +93,4 @@ exports.Discord = Discord;
 exports.client = client;
 exports.Sequelize = Sequelize;
 exports.sql = sql;
+exports.commands = commands;

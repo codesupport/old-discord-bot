@@ -1,5 +1,5 @@
 // Dependencies
-const app = require("./../app.js");
+const app = require(`${_ROOT_DIR}/app.js`);
 
 const Discord = app.Discord;
 
@@ -7,10 +7,10 @@ const Discord = app.Discord;
 const properties = {
 	command: "rule",
 	description: "Shows a rule based on the number given.",
-	prefix: true,
+	hasPrefix: true,
 	arguments: ["<rule number>"],
-	visible: true,
-	botchat: false
+	isVisible: true,
+	isBotChat: false
 };
 
 // The code that runs when the command is executed.
@@ -22,7 +22,7 @@ function run(message, args) {
 		embed.setDescription("You must define a rule number.");
 		embed.addField("Correct Usage", "?rule <rule number>");
 
-		message.chanenl.send({embed});
+		message.channel.send({embed});
 	} else {
 		const rules = {
 			"1|ask": "Actually ask your question, don't just ask for \"help\".",

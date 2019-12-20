@@ -3,8 +3,9 @@
  */
 
 // Dependencies
-const NumberUtils = require("./numberUtils.js");
-const {padString} = require("./stringUtils.js");
+const NumberUtils = require(`${_ROOT_DIR}/utils/numberUtils.js`);
+const {padString} = require(`${_ROOT_DIR}/utils/stringUtils.js`);
+const {isNull} = require(`${_ROOT_DIR}/utils/objectUtils.js`);
 
 const monthsOfYear = [
 	"January",
@@ -76,7 +77,7 @@ class DateFormat {
 		for (let i = 0; i < formatString.length; i++) {
 			const char = formatString.substr(i, 1);
 
-			formattedDate += this[char] !== undefined ? this[char] : char;
+			formattedDate += !isNull(this[char]) ? this[char] : char;
 		}
 		return formattedDate;
 	}
@@ -90,7 +91,7 @@ class DateFormat {
  * date - The date to apply to the parsed format string.
  */
 function format(formatString, date) {
-	if (date !== undefined && typeof date.getDate === "function") {
+	if (!isNull(date) && typeof date.getDate === "function") {
 		const dateFormat = new DateFormat(date);
 		const formattedDate = dateFormat.format(formatString);
 

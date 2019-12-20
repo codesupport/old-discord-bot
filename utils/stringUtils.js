@@ -3,7 +3,8 @@
  */
 
 // Dependencies
-const {isNumber} = require("./numberUtils.js");
+const {isNumber} = require(`${_ROOT_DIR}/utils/numberUtils.js`);
+const {isNull} = require(`${_ROOT_DIR}/utils/objectUtils.js`);
 
 /*
  * Checks if the object is a string.
@@ -22,7 +23,7 @@ function isString(object) {
  * object - The object to check.
  */
 function isEmpty(object) {
-	return object === undefined ||
+	return isNull(object) ||
     isString(object) && object.trim() === "";
 }
 

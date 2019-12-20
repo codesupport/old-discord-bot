@@ -1,5 +1,5 @@
 // Dependencies
-const app = require("./../app.js");
+const app = require(`${_ROOT_DIR}/app.js`);
 
 const config = app.config;
 const Discord = app.Discord;
@@ -23,3 +23,4 @@ function run(oldMessage, newMessage) {
 
 // Export the data
 exports.run = run;
+exports.event = "messageUpdate";
