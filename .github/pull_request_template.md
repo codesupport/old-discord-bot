@@ -3,4 +3,3 @@
 
 
 ### Why is this beneficial to the project?
-https://eslint.org/docs/rules/eqeqeq
