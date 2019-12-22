@@ -9,6 +9,8 @@
 ### Development
 - [eslint](https://www.npmjs.com/package/eslint)
 - [eslint-config-codesupport](https://www.npmjs.com/package/eslint-config-codesupport)
+- [mocha](https://www.npmjs.com/package/mocha)
+- [assert](https://www.npmjs.com/package/assert)
 
 ## Setup
 1. Setup a local MySQL database using our [table creation syntax](https://github.com/codesupport/table-create-syntax)
