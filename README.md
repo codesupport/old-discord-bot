@@ -1,6 +1,6 @@
 # CodeSupport Discord Bot
 
-## Dependancies
+## Dependencies
 ### Production
 - [discord.js](https://www.npmjs.com/package/discord.js)
 - [sequelize](https://www.npmjs.com/package/sequelize)
