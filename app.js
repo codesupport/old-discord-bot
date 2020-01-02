@@ -66,9 +66,6 @@ client.on("message", (message) => {
 
 // Events
 client.on(MESSAGE_UPDATE, (oldMessage, newMessage) => {
-	if (oldMessage.content == newMessage.content) {
-		return;
-	}
 	events.getEvent(MESSAGE_UPDATE).run(oldMessage, newMessage);
 });
 
