@@ -19,6 +19,7 @@ const MESSAGE_UPDATE = "messageUpdate";
 const MESSAGE_DELETE = "messageDelete";
 const MESSAGE_REACTION_ADD = "messageReactionAdd";
 const GUILD_MEMBER_ADD = "guildMemberAdd";
+const MESSAGE = "message";
 
 // Setup the Discord Client
 const client = new Discord.Client({
@@ -48,7 +49,7 @@ client.on("ready", () => {
 });
 
 // Run when a message is sent
-client.on("message", (message) => {
+client.on(MESSAGE, (message) => {
 	const args = message.content.split(" ");
 
 	if (commands.hasCommand(args[0])) {
@@ -62,6 +63,8 @@ client.on("message", (message) => {
 			}
 		}
 	}
+
+	events.getEvent(MESSAGE).run(message);
 });
 
 // Events
