@@ -6,21 +6,20 @@ const Discord = app.Discord;
 
 // The code that runs when the event is executed.
 function run(oldMessage, newMessage) {
-	if (oldMessage.content == newMessage.content) {
-		return;
-	}
-	if (![oldMessage.content, newMessage.content].includes("")) {
-		const logsChannel = oldMessage.guild.channels.find((channel) => {
-			return channel.id == config.logs_channel;
-		});
-		const embed = new Discord.RichEmbed();
+	if (oldMessage.content != newMessage.content) {
+		if (![oldMessage.content, newMessage.content].includes("")) {
+			const logsChannel = oldMessage.guild.channels.find((channel) => {
+				return channel.id == config.logs_channel;
+			});
+			const embed = new Discord.RichEmbed();
 
-		embed.setTitle("Message Updated");
-		embed.setDescription(`Author: ${oldMessage.author}\nChannel: ${oldMessage.channel}`);
-		embed.addField("Old Message", oldMessage.content || ".");
-		embed.addField("New Message", newMessage.content || ".");
+			embed.setTitle("Message Updated");
+			embed.setDescription(`Author: ${oldMessage.author}\nChannel: ${oldMessage.channel}`);
+			embed.addField("Old Message", oldMessage.content || ".");
+			embed.addField("New Message", newMessage.content || ".");
 
-		logsChannel.send({ embed });
+			logsChannel.send({ embed });
+		}
 	}
 }
 
