@@ -44,7 +44,7 @@ sql.authenticate().then(() => {
 client.on("ready", () => {
 	AppLoader.setClient(client);
 	AppLoader.setConfig(config);
-	AppLoader.loadResources({commands, events});
+	AppLoader.loadResources({ commands, events });
 });
 
 // Run when a message is sent
