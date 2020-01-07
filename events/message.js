@@ -12,32 +12,18 @@ const UserDiscordStats = require(`${_ROOT_DIR}/models/UserDiscordStats.js`);
 async function run(message) {
 	if (message.channel.id === config.showcase_channel) {
 		try {
-			let userId;
-
 			const users = await User.findAll({
 				where: {
 					discordId: message.author.id
 				}
 			});
 
-			if (users.length === 0) {
-				userId = users.id;
-			} else {
-				userId = users[0].id;
-			}
-
-			let userStats;
-
+			const	userId = users[0].id;
 			const usersDiscordStats = await UserDiscordStats.findOrCreate({
 				where: { userId }
 			});
 
-			if (usersDiscordStats.length === 0) {
-				userStats = usersDiscordStats;
-			} else {
-				userStats = usersDiscordStats[0];
-			}
-
+			const userStats = usersDiscordStats[0];
 			const today = new Date();
 			const monthAgo = new Date();
 
