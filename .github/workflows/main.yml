@@ -9,3 +9,11 @@ jobs:
       run: |
         npm i
         npm run lint
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Runs Tests
+      run: |
+        npm i
+        npm run test
