@@ -1,5 +1,6 @@
 // Dependencies
 const app = require(`${_ROOT_DIR}/app.js`);
+const Log = require(`${_ROOT_DIR}/logging/logging.js`);
 
 const config = app.config;
 
@@ -55,7 +56,7 @@ async function run(message) {
 			});
 		} catch (error) {
 			message.delete();
-			console.error(error);
+			Log.error(error.message);
 		}
 	}
 }
