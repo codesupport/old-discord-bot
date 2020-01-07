@@ -38,10 +38,13 @@ async function run(message) {
 				userStats = usersDiscordStats[0];
 			}
 
-			const monthAgo = new Date().getTime() + 30 * 24 * 60 * 60 * 1000;
+			const today = new Date();
+			const monthAgo = new Date();
+
+			monthAgo.setMonth(today.getMonth() - 1);
 
 			if (userStats.lastShowcasePost) {
-				if (new Date(userStats.lastShowcasePost) < monthAgo) {
+				if (new Date(userStats.lastShowcasePost) > monthAgo) {
 					message.delete();
 					message.author.send("You have posted a showcase post in the last 30 days.");
 
