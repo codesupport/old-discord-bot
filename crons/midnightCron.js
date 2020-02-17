@@ -9,7 +9,7 @@ let joined;
 module.exports = (client) => {
 	joined = client.memberCount;
 
-	cron.schedule("* * * * *", async () => {
+	cron.schedule("0 0 * * *", async () => {
 		joined = client.memberCount - joined;
 
 		Log.info("Saving Memberflow.");
