@@ -20,6 +20,9 @@ const MESSAGE_DELETE = "messageDelete";
 const MESSAGE_REACTION_ADD = "messageReactionAdd";
 const GUILD_MEMBER_ADD = "guildMemberAdd";
 
+// Crons
+const midnightCron = require("./crons/midnightCron");
+
 // Setup the Discord Client
 const client = new Discord.Client({
 	fetchAllMembers: true
@@ -41,10 +44,12 @@ sql.authenticate().then(() => {
 });
 
 // Run the command handler when the bot is ready.
-client.on("ready", () => {
+client.on("ready", async() => {
 	AppLoader.setClient(client);
 	AppLoader.setConfig(config);
 	AppLoader.loadResources({ commands, events });
+
+	midnightCron(client);
 });
 
 // Run when a message is sent
