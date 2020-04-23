@@ -1,3 +1,4 @@
+/* eslint-disable */
 // Dependencies
 const app = require(`${_ROOT_DIR}/app.js`);
 
