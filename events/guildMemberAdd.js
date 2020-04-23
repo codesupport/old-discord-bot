@@ -1,3 +1,4 @@
+/* eslint-disable */
 // Dependencies
 const app = require(`${_ROOT_DIR}/app.js`);
 
@@ -10,9 +11,9 @@ function run(member) {
 	const dateDifference = currentDate - memberCreatedDate;
 
 	// Check that the member has an avatar and their account is at least 30 days old.
-	if (member.user.avatar && dateDifference / 2592000000 > 1) {
-		member.addRole(config.roles.member, "Appears to be a valid account.");
-	}
+	//if (member.user.avatar && dateDifference / 2592000000 > 1) {
+	//	member.addRole(config.roles.member, "Appears to be a valid account.");
+	//}
 }
 
 // Export the data
