@@ -22,128 +22,137 @@ const properties = {
 
 // The code that runs when the command is executed.
 function run(message, args) {
-	const guild = message.guild;
-	let userId;
+	if (process.env.USE_DATABASE) {
+		const guild = message.guild;
+		let userId;
 
-	if (typeof args[1] == "undefined") {
-		userId = message.author.id;
-	} else {
-		// Checks if the argument only contains letters.
-		if (/^[a-zA-Z]+$/.test(args[1])) {
-			const guildMember = guild.members.find((member) => {
-				return member.displayName == args[1];
-			});
-
-			userId = guildMember == null ? null : guildMember.id;
+		if (typeof args[1] == "undefined") {
+			userId = message.author.id;
 		} else {
-			userId = args[1];
-		}
-	}
-
-	const guildMember = guild.members.find((member) => {
-		return member.id == userId;
-	});
-
-	if (guildMember) {
-		User.findAll({
-			where: {
-				discordId: guildMember.id
-			}
-		}).then((users) => {
-			let userDatabaseId;
-
-			if (users.length == 0) {
-				const embed = new Discord.RichEmbed();
-
-				embed.setTitle("Error");
-				embed.setDescription("We could not find that user in the users database. Creating their record.");
-
-				message.channel.send({embed}).then((message) => {
-					message.delete(2500);
+			// Checks if the argument only contains letters.
+			if (/^[a-zA-Z]+$/.test(args[1])) {
+				const guildMember = guild.members.find((member) => {
+					return member.displayName == args[1];
 				});
 
-				User.create({
+				userId = guildMember == null ? null : guildMember.id;
+			} else {
+				userId = args[1];
+			}
+		}
+
+		const guildMember = guild.members.find((member) => {
+			return member.id == userId;
+		});
+
+		if (guildMember) {
+			User.findAll({
+				where: {
 					discordId: guildMember.id
-				}).then((user) => {
+				}
+			}).then((users) => {
+				let userDatabaseId;
+
+				if (users.length == 0) {
 					const embed = new Discord.RichEmbed();
 
-					embed.setTitle("Success");
-					embed.setDescription("Created the user's record in the database.");
+					embed.setTitle("Error");
+					embed.setDescription("We could not find that user in the users database. Creating their record.");
 
 					message.channel.send({embed}).then((message) => {
 						message.delete(2500);
 					});
 
-					userDatabaseId = user.id;
-				});
-			} else {
-				userDatabaseId = users[0].id;
-			}
+					User.create({
+						discordId: guildMember.id
+					}).then((user) => {
+						const embed = new Discord.RichEmbed();
 
-			const waitForUserCreation = setInterval(() => {
-				if (userDatabaseId) {
-					clearInterval(waitForUserCreation);
+						embed.setTitle("Success");
+						embed.setDescription("Created the user's record in the database.");
 
-					UserProfile.findAll({
-						where: {
-							userId: userDatabaseId
-						}
-					}).then((users) => {
-						let userProfile;
+						message.channel.send({embed}).then((message) => {
+							message.delete(2500);
+						});
 
-						if (users.length == 0) {
-							const embed = new Discord.RichEmbed();
+						userDatabaseId = user.id;
+					});
+				} else {
+					userDatabaseId = users[0].id;
+				}
 
-							embed.setTitle("Error");
-							embed.setDescription("We could not find that user in the user profile database. Creating their record.");
+				const waitForUserCreation = setInterval(() => {
+					if (userDatabaseId) {
+						clearInterval(waitForUserCreation);
 
-							message.channel.send({embed}).then((message) => {
-								message.delete(2500);
-							});
-
-							UserProfile.create({
+						UserProfile.findAll({
+							where: {
 								userId: userDatabaseId
-							}).then((user) => {
+							}
+						}).then((users) => {
+							let userProfile;
+
+							if (users.length == 0) {
 								const embed = new Discord.RichEmbed();
 
-								embed.setTitle("Success");
-								embed.setDescription("Created the user's record in the database.");
+								embed.setTitle("Error");
+								embed.setDescription("We could not find that user in the user profile database. Creating their record.");
 
 								message.channel.send({embed}).then((message) => {
 									message.delete(2500);
 								});
 
-								userProfile = user;
-							});
-						} else {
-							userProfile = users[0];
-						}
+								UserProfile.create({
+									userId: userDatabaseId
+								}).then((user) => {
+									const embed = new Discord.RichEmbed();
 
-						const waitForProfileCreation = setInterval(() => {
-							if (userProfile) {
-								const embed = new Discord.RichEmbed();
-								const joined = guildMember.joinedAt;
+									embed.setTitle("Success");
+									embed.setDescription("Created the user's record in the database.");
 
-								embed.setTitle(`${userDatabaseId}'s Profile`);
-								embed.setDescription(`${userProfile.bio || "Not Defined"}`);
-								embed.addField("Git", `${userProfile.git || "Not Defined"}`);
-								embed.addField("Country", `${userProfile.country || "Not Defined"}`);
-								embed.addField("Join Date", `${joined.getDate()} ${getMonth(joined)} ${joined.getFullYear()}`);
+									message.channel.send({embed}).then((message) => {
+										message.delete(2500);
+									});
 
-								message.channel.send({embed});
-
-								clearInterval(waitForProfileCreation);
+									userProfile = user;
+								});
+							} else {
+								userProfile = users[0];
 							}
-						}, 1000);
-					});
-				}
+
+							const waitForProfileCreation = setInterval(() => {
+								if (userProfile) {
+									const embed = new Discord.RichEmbed();
+									const joined = guildMember.joinedAt;
+
+									embed.setTitle(`${userDatabaseId}'s Profile`);
+									embed.setDescription(`${userProfile.bio || "Not Defined"}`);
+									embed.addField("Git", `${userProfile.git || "Not Defined"}`);
+									embed.addField("Country", `${userProfile.country || "Not Defined"}`);
+									embed.addField("Join Date", `${joined.getDate()} ${getMonth(joined)} ${joined.getFullYear()}`);
+
+									message.channel.send({embed});
+
+									clearInterval(waitForProfileCreation);
+								}
+							}, 1000);
+						});
+					}
+				});
 			});
-		});
+		} else {
+			const embed = new Discord.RichEmbed();
+
+			embed.setTitle("Error");
+			embed.setDescription("We could not find that user in the CodeSupport Discord.");
+
+			message.channel.send({embed});
+		}
 	} else {
 		const embed = new Discord.RichEmbed();
 
 		embed.setTitle("Error");
-		embed.setDescription("We could not find that user in the CodeSupport Discord.");
+		embed.setDescription("This command is disabled due to the database being disabled.");
 
 		message.channel.send({embed});
 	}
