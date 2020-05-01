@@ -28,20 +28,24 @@ const client = new Discord.Client({
 	fetchAllMembers: true
 });
 
-// Setup Sequelize to connect to MySQL
-const sql = new Sequelize(process.env.MYSQL_DATABASE, process.env.MYSQL_USER, process.env.MYSQL_PASSWORD, {
-	host: process.env.MYSQL_HOST,
-	dialect: "mysql",
-	logging: false
-});
+let sql;
 
-sql.authenticate().then(() => {
-	Log.info(`Successfully connected to MySQL as '${process.env.MYSQL_USER}'.`);
-}).catch((error) => {
-	Log.error(`Failed to connect to DB (${error.original.address}:${error.original.port}) - ${error.name}`);
-	Log.error(`Reason: ${error.original.code}`);
-	process.exit(1);
-});
+// Setup Sequelize to connect to MySQL
+if (process.env.USE_DATABASE) {
+	sql = new Sequelize(process.env.MYSQL_DATABASE, process.env.MYSQL_USER, process.env.MYSQL_PASSWORD, {
+		host: process.env.MYSQL_HOST,
+		dialect: "mysql",
+		logging: false
+	});
+
+	sql.authenticate().then(() => {
+		Log.info(`Successfully connected to MySQL as '${process.env.MYSQL_USER}'.`);
+	}).catch((error) => {
+		Log.error(`Failed to connect to DB (${error.original.address}:${error.original.port}) - ${error.name}`);
+		Log.error(`Reason: ${error.original.code}`);
+		process.exit(1);
+	});
+}
 
 // Run the command handler when the bot is ready.
 client.on("ready", async() => {
